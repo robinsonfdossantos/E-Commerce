@@ -22,7 +22,7 @@ Product.init(
       type: DataTypes.DECIMAL(10, 2)
     },
     stock: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.INTEGER
     },
     category_id: {
       type: DataTypes.INTEGER,
