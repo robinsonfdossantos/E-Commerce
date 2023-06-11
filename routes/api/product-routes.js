@@ -1,13 +1,10 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
+const { route } = require('./category-routes');
 
-// The `/api/products` endpoint
-
- 
 // ---------------------------------------------------------------------
 // ------------------------ GET OK -------------------------------------
 // ---------------------------------------------------------------------
-// get all products
 router.get('/', async (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
@@ -39,7 +36,7 @@ router.get('/:product_id', async (req, res) => {
       res.status(404).json({ message: 'No product found with this id!' });
       return;
     }
-    
+
     res.status(200).json(productData);
   } catch (err) {
     res.status(500).json(err);
@@ -152,5 +149,25 @@ router.delete('/:product_id', async (req, res) => {
   }
 });
 
+// ---------------------------------------------------------------------
+// --------- GET ALL PRODUCTS WHERE CATEGORY ID IS NULL ----------------
+// ---------------------------------------------------------------------
+router.get('/category/:category_id', async (req, res) => {
+  try {
+    const productData = await Product.findAll({
+      where: {
+        category_id: null,
+      },
+      include: [{ model: Category, required: false }, { model: Tag, through: ProductTag }],
+    });
+    res.status(200).json(productData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 
 module.exports = router;
+
+
+
