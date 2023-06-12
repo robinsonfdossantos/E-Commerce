@@ -3,7 +3,7 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 const { route } = require('./category-routes');
 
 // ---------------------------------------------------------------------
-// ------------------------ GET OK -------------------------------------
+// ------------------------ GET ALL PRODUCTS ---------------------------
 // ---------------------------------------------------------------------
 router.get('/', async (req, res) => {
   // find all products
@@ -19,14 +19,11 @@ router.get('/', async (req, res) => {
 
 });
 
- 
 // ---------------------------------------------------------------------
-// ------------------------ GET BY ID OK -------------------------------
+// ------------------------ GET PRODUCT BY ID --------------------------
 // ---------------------------------------------------------------------
-// get one product
 router.get('/:product_id', async (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
+
   try {
     const productData = await Product.findByPk(req.params.product_id, {
       include: [{ model: Category }, { model: Tag, through: ProductTag }],
@@ -44,18 +41,9 @@ router.get('/:product_id', async (req, res) => {
 });
 
 // ---------------------------------------------------------------------
-// ------------------------ CREATE OK ----------------------------------
+// ------------------------ CREATE PRODUCT -----------------------------
 // ---------------------------------------------------------------------
-// create new product
 router.post('/', (req, res) => {
-  /* req.body should look like this...
-    {
-      product_name: "Basketball",
-      price: 200.00,
-      stock: 3,
-      tagIds: [1, 2, 3, 4]
-    }
-  */
 
   Product.create(req.body)
     .then((product) => {
@@ -79,9 +67,8 @@ router.post('/', (req, res) => {
     });
 });
 
-
 // ---------------------------------------------------------------------
-// ------------------------ UPDATE OK ----------------------------------
+// ------------------------ UPDATE PRODUCT -----------------------------
 // ---------------------------------------------------------------------
 router.put('/:product_id', (req, res) => {
   // update product data
@@ -127,9 +114,8 @@ router.put('/:product_id', (req, res) => {
     });
 });
 
-
 // ---------------------------------------------------------------------
-// ------------------------ DELETE OK ----------------------------------
+// ------------------------ DELETE PRODUCT BY ID -----------------------
 // ---------------------------------------------------------------------
 router.delete('/:product_id', async (req, res) => {
   // delete one product by its `id` value
